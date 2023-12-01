@@ -1,0 +1,1051 @@
+#include <iostream>
+using namespace std;
+
+struct Node {
+    int data;
+    Node *next;
+    Node *prev;
+
+    Node(int value) : data(value), next(NULL), prev(NULL) {}
+};
+class SinglyLinkedList {
+private:
+    Node *start;
+
+public:
+    SinglyLinkedList() : start(NULL) {}
+
+    void addFirst(int value) {
+        Node *temp = new Node(value);
+        temp->next = start;
+        start = temp;
+    }
+
+    void addLast(int value) {
+        Node *temp = new Node(value);
+        if (start == NULL) {
+            start = temp;
+        } else {
+            Node *traverse = start;
+            while (traverse->next != NULL) {
+                traverse = traverse->next;
+            }
+            traverse->next = temp;
+        }
+    }
+
+    void deleteFirst() {
+        if (start != NULL) {
+            Node *temp = start;
+            start = start->next;
+            delete temp;
+        }
+    }
+
+    void deleteLast() {
+        if (start != NULL) {
+            if (start->next == NULL) {
+                delete start;
+                start = NULL;
+            } else {
+                Node *traverse = start;
+                while (traverse->next->next != NULL) {
+                    traverse = traverse->next;
+                }
+                delete traverse->next;
+                traverse->next = NULL;
+            }
+        }
+    }
+
+    void insertAt(int value, int index) {
+        if (index < 0) {
+            cout << "Invalid index." << endl;
+            return;
+        }
+
+        if (index == 0) {
+            addFirst(value);
+            return;
+        }
+
+        Node *temp = new Node(value);
+        Node *traverse = start;
+
+        for (int i = 0; i < index - 1; ++i) {
+            if (traverse == NULL) {
+                cout << "Index out of bounds." << endl;
+                delete temp;
+                return;
+            }
+            traverse = traverse->next;
+        }
+
+        temp->next = traverse->next;
+        traverse->next = temp;
+    }
+
+    bool search(int value) {
+        Node *traverse = start;
+        while (traverse != NULL) {
+            if (traverse->data == value) {
+                return true;
+            }
+            traverse = traverse->next;
+        }
+        return false;
+    }
+
+    bool isPalindrome() {
+        // Implementation of isPalindrome for singly linked list
+        // ...
+
+        return false;
+    }
+
+    int countNodes() {
+        int count = 0;
+        Node *traverse = start;
+        while (traverse != NULL) {
+            ++count;
+            traverse = traverse->next;
+        }
+        return count;
+    }
+
+    int max() {
+        // Implementation of max for singly linked list
+        // ...
+
+        return 0;
+    }
+
+    float average() {
+        // Implementation of average for singly linked list
+        // ...
+
+        return 0.0f;
+    }
+
+    void reverse() {
+        // Implementation of reverse for singly linked list
+        // ...
+    }
+
+    void printList() {
+        Node *traverse = start;
+        while (traverse != NULL) {
+            cout << traverse->data << " -> ";
+            traverse = traverse->next;
+        }
+        cout << "NULL" << endl;
+    }
+
+    ~SinglyLinkedList() {
+        // Destructor to free allocated memory
+        Node *traverse = start;
+        while (traverse != NULL) {
+            Node *temp = traverse;
+            traverse = traverse->next;
+            delete temp;
+        }
+    }
+};
+class CircularLinkedList {
+private:
+    Node *start;
+
+public:
+    CircularLinkedList() : start(NULL) {}
+
+    Node *createNode(int value) {
+        Node *temp = new Node(value);
+        return temp;
+    }
+
+    void addFirst(int value) {
+        Node *temp = createNode(value);
+        if (start == NULL) {
+            start = temp;
+            temp->next = start;
+        } else {
+            Node *traverse = start;
+            while (traverse->next != start) {
+                traverse = traverse->next;
+            }
+            temp->next = start;
+            start = temp;
+            traverse->next = start;
+        }
+    }
+
+    void addLast(int value) {
+        Node *temp = createNode(value);
+        if (start == NULL) {
+            start = temp;
+            temp->next = start;
+        } else {
+            Node *traverse = start;
+            while (traverse->next != start) {
+                traverse = traverse->next;
+            }
+            traverse->next = temp;
+            temp->next = start;
+        }
+    }
+
+    void deleteFirst() {
+        if (start != NULL) {
+            Node *temp = start;
+            Node *traverse = start;
+            while (traverse->next != start) {
+                traverse = traverse->next;
+            }
+            if (traverse == start) {
+                start = NULL;
+            } else {
+                start = start->next;
+                traverse->next = start;
+            }
+            delete temp;
+        }
+    }
+
+    void deleteLast() {
+        if (start != NULL) {
+            Node *temp = start;
+            Node *prev = NULL;
+            while (temp->next != start) {
+                prev = temp;
+                temp = temp->next;
+            }
+            if (temp == start) {
+                start = NULL;
+            } else {
+                prev->next = start;
+            }
+            delete temp;
+        }
+    }
+
+    void insertAt(int value, int index) {
+        if (index < 0) {
+            cout << "Invalid index." << endl;
+            return;
+        }
+
+        if (index == 0) {
+            addFirst(value);
+            return;
+        }
+
+        Node *temp = createNode(value);
+        Node *traverse = start;
+        for (int i = 0; i < index - 1; ++i) {
+            if (traverse == NULL) {
+                cout << "Index out of bounds." << endl;
+                delete temp;
+                return;
+            }
+            traverse = traverse->next;
+        }
+        temp->next = traverse->next;
+        traverse->next = temp;
+    }
+
+    bool search(int value) {
+        Node *traverse = start;
+        do {
+            if (traverse->data == value) {
+                return true;
+            }
+            traverse = traverse->next;
+        } while (traverse != start);
+        return false;
+    }
+
+    bool isPalindrome() {
+        // Implementation of isPalindrome for circular linked list
+        // ...
+
+        return false;
+    }
+
+    int countNodes() {
+        if (start == NULL) {
+            return 0;
+        }
+
+        int count = 0;
+        Node *traverse = start;
+        do {
+            ++count;
+            traverse = traverse->next;
+        } while (traverse != start);
+        return count;
+    }
+
+    int max() {
+        // Implementation of max for circular linked list
+        // ...
+
+        return 0;
+    }
+
+    float average() {
+        // Implementation of average for circular linked list
+        // ...
+
+        return 0.0f;
+    }
+
+    void reverse() {
+        // Reverse operation not applicable for circular linked list
+    }
+
+    void printList() {
+        if (start == NULL) {
+            cout << "Empty list." << endl;
+            return;
+        }
+
+        Node *traverse = start;
+        do {
+            cout << traverse->data << " -> ";
+            traverse = traverse->next;
+        } while (traverse != start);
+        cout << "Start" << endl;
+    }
+
+    ~CircularLinkedList() {
+        if (start != NULL) {
+            Node *traverse = start;
+            Node *temp;
+            do {
+                temp = traverse;
+                traverse = traverse->next;
+                delete temp;
+            } while (traverse != start);
+        }
+    }
+};
+
+class DoublyLinkedList {
+private:
+    Node *start;
+
+public:
+    DoublyLinkedList() : start(NULL) {}
+
+    Node *createNode(int value) {
+        Node *temp = new Node(value);
+        return temp;
+    }
+
+    void addFirst(int value) {
+        Node *temp = createNode(value);
+        temp->next = start;
+        temp->prev = NULL;
+        if (start != NULL) {
+            start->prev = temp;
+        }
+        start = temp;
+    }
+
+    void addLast(int value) {
+        Node *temp = createNode(value);
+        if (start == NULL) {
+            start = temp;
+            temp->prev = NULL;
+        } else {
+            Node *traverse = start;
+            while (traverse->next != NULL) {
+                traverse = traverse->next;
+            }
+            traverse->next = temp;
+            temp->prev = traverse;
+        }
+        temp->next = NULL;
+    }
+
+    void deleteFirst() {
+        if (start != NULL) {
+            Node *temp = start;
+            start = start->next;
+            if (start != NULL) {
+                start->prev = NULL;
+            }
+            delete temp;
+        }
+    }
+
+    void deleteLast() {
+        if (start != NULL) {
+            Node *temp = start;
+            while (temp->next != NULL) {
+                temp = temp->next;
+            }
+            if (temp->prev != NULL) {
+                temp->prev->next = NULL;
+            } else {
+                start = NULL;
+            }
+            delete temp;
+        }
+    }
+
+    void insertAt(int value, int index) {
+        if (index < 0) {
+            cout << "Invalid index." << endl;
+            return;
+        }
+
+        if (index == 0) {
+            addFirst(value);
+            return;
+        }
+
+        Node *temp = createNode(value);
+        Node *traverse = start;
+
+        for (int i = 0; i < index - 1; ++i) {
+            if (traverse == NULL) {
+                cout << "Index out of bounds." << endl;
+                delete temp;
+                return;
+            }
+            traverse = traverse->next;
+        }
+
+        temp->next = traverse->next;
+        temp->prev = traverse;
+        if (traverse->next != NULL) {
+            traverse->next->prev = temp;
+        }
+        traverse->next = temp;
+    }
+
+    bool search(int value) {
+        Node *traverse = start;
+        while (traverse != NULL) {
+            if (traverse->data == value) {
+                return true;
+            }
+            traverse = traverse->next;
+        }
+        return false;
+    }
+
+    bool isPalindrome() {
+        // Implementation of isPalindrome for doubly linked list
+        // ...
+
+        return false;
+    }
+
+    int countNodes() {
+        int count = 0;
+        Node *traverse = start;
+        while (traverse != NULL) {
+            ++count;
+            traverse = traverse->next;
+        }
+        return count;
+    }
+
+    int max() {
+        int maxValue = INT_MIN;
+        Node *traverse = start;
+        while (traverse != NULL) {
+            if (traverse->data > maxValue) {
+                maxValue = traverse->data;
+            }
+            traverse = traverse->next;
+        }
+        return maxValue;
+    }
+
+    float average() {
+        int sum = 0;
+        int count = 0;
+        Node *traverse = start;
+        while (traverse != NULL) {
+            sum += traverse->data;
+            ++count;
+            traverse = traverse->next;
+        }
+        if (count != 0) {
+            return static_cast<float>(sum) / count;
+        }
+        return 0.0f;
+    }
+
+    void reverse() {
+        Node *temp = NULL;
+        Node *current = start;
+        while (current != NULL) {
+            temp = current->prev;
+            current->prev = current->next;
+            current->next = temp;
+            current = current->prev;
+        }
+        if (temp != NULL) {
+            start = temp->prev;
+        }
+    }
+
+    void printList() {
+        Node *traverse = start;
+        while (traverse != NULL) {
+            cout << traverse->data << " <-> ";
+            traverse = traverse->next;
+        }
+        cout << "NULL" << endl;
+    }
+
+    ~DoublyLinkedList() {
+        Node *traverse = start;
+        while (traverse != NULL) {
+            Node *temp = traverse;
+            traverse = traverse->next;
+            delete temp;
+        }
+    }
+};
+
+class DoublyCircularLinkedList {
+private:
+    Node *start;
+
+public:
+    DoublyCircularLinkedList() : start(NULL) {}
+
+    Node *createNode(int value) {
+        Node *temp = new Node(value);
+        return temp;
+    }
+
+    void addFirst(int value) {
+        Node *temp = createNode(value);
+        if (start == NULL) {
+            start = temp;
+            temp->next = start;
+            temp->prev = start;
+        } else {
+            temp->next = start;
+            temp->prev = start->prev;
+            start->prev->next = temp;
+            start->prev = temp;
+            start = temp;
+        }
+    }
+
+    void addLast(int value) {
+        Node *temp = createNode(value);
+        if (start == NULL) {
+            start = temp;
+            temp->next = start;
+            temp->prev = start;
+        } else {
+            temp->next = start;
+            temp->prev = start->prev;
+            start->prev->next = temp;
+            start->prev = temp;
+        }
+    }
+
+    void deleteFirst() {
+        if (start != NULL) {
+            Node *temp = start;
+            if (start->next == start) {
+                start = NULL;
+            } else {
+                start->prev->next = start->next;
+                start->next->prev = start->prev;
+                start = start->next;
+            }
+            delete temp;
+        }
+    }
+
+    void deleteLast() {
+        if (start != NULL) {
+            Node *temp = start->prev;
+            if (temp == start) {
+                start = NULL;
+            } else {
+                temp->prev->next = start;
+                start->prev = temp->prev;
+            }
+            delete temp;
+        }
+    }
+
+    void insertAt(int value, int index) {
+        if (index < 0) {
+            cout << "Invalid index." << endl;
+            return;
+        }
+
+        if (index == 0) {
+            addFirst(value);
+            return;
+        }
+
+        Node *temp = createNode(value);
+        Node *traverse = start;
+        for (int i = 0; i < index - 1; ++i) {
+            if (traverse == NULL) {
+                cout << "Index out of bounds." << endl;
+                delete temp;
+                return;
+            }
+            traverse = traverse->next;
+        }
+        temp->next = traverse->next;
+        temp->prev = traverse;
+        traverse->next->prev = temp;
+        traverse->next = temp;
+    }
+
+    bool search(int value) {
+        Node *traverse = start;
+        do {
+            if (traverse->data == value) {
+                return true;
+            }
+            traverse = traverse->next;
+        } while (traverse != start);
+        return false;
+    }
+
+    bool isPalindrome() {
+        // Implementation of isPalindrome for doubly circular linked list
+        // ...
+
+        return false;
+    }
+
+    int countNodes() {
+        if (start == NULL) {
+            return 0;
+        }
+
+        int count = 0;
+        Node *traverse = start;
+        do {
+            ++count;
+            traverse = traverse->next;
+        } while (traverse != start);
+        return count;
+    }
+
+    int max() {
+        // Implementation of max for doubly circular linked list
+        // ...
+
+        return 0;
+    }
+
+    float average() {
+        // Implementation of average for doubly circular linked list
+        // ...
+
+        return 0.0f;
+    }
+
+    void reverse() {
+        // Reverse operation not applicable for doubly circular linked list
+    }
+
+    void printList() {
+        if (start == NULL) {
+            cout << "Empty list." << endl;
+            return;
+        }
+
+        Node *traverse = start;
+        do {
+            cout << traverse->data << " <-> ";
+            traverse = traverse->next;
+        } while (traverse != start);
+        cout << "Start" << endl;
+    }
+
+    ~DoublyCircularLinkedList() {
+        if (start != NULL) {
+            Node *traverse = start;
+            Node *temp;
+            do {
+                temp = traverse;
+                traverse = traverse->next;
+                delete temp;
+            } while (traverse != start);
+        }
+    }
+};
+
+int main() {
+    int option, value, index;
+    char listType;
+    SinglyLinkedList sll;
+    CircularLinkedList cll;
+    DoublyLinkedList dll;
+    DoublyCircularLinkedList dcll;
+
+    do {
+        cout << "---------------Main Menu-------------------" << endl;
+        cout << "1. Single Linked List" << endl;
+        cout << "2. Circular Linked List" << endl;
+        cout << "3. Double Linked List" << endl;
+        cout << "4. Double Circular Linked List" << endl;
+        cout << "5. Exit" << endl;
+        cin >> option;
+
+        switch (option) {
+            case 1:
+                do {
+                    cout << "---------------Single Linked List Menu-------------------" << endl;
+                    cout << "1  Add First" << endl;
+                    cout << "2. Add Last" << endl;
+                    cout << "3. Delete First" << endl;
+                    cout << "4. Delete Last" << endl;
+                    cout << "5. Insert At" << endl;
+                    cout << "6. Search" << endl;
+                    cout << "7. Is Palindrome" << endl;
+                    cout << "8. Count Nodes" << endl;
+                    cout << "9. Max" << endl;
+                    cout << "10. Average" << endl;
+                    cout << "11. Reverse" << endl;
+                    cout << "12. Print List" << endl;
+                    cout << "13. Back to Main Menu" << endl;
+                    cin >> option;
+
+                    switch (option) {
+                        case 1:
+                            cout << "Enter value to add: ";
+                            cin >> value;
+                            sll.addFirst(value);
+                            break;
+                        case 2:
+                            cout << "Enter value to add: ";
+                            cin >> value;
+                            sll.addLast(value);
+                            break;
+                        case 3:
+                            sll.deleteFirst();
+                            break;
+                        case 4:
+                            sll.deleteLast();
+                            break;
+                        case 5:
+                            cout << "Enter value to insert: ";
+                            cin >> value;
+                            cout << "Enter index: ";
+                            cin >> index;
+                            sll.insertAt(value, index);
+                            break;
+                        case 6:
+                            cout << "Enter value to search: ";
+                            cin >> value;
+                            if (sll.search(value)) {
+                                cout << "Value found in the list." << endl;
+                            } else {
+                                cout << "Value not found in the list." << endl;
+                            }
+                            break;
+                        case 7:
+                            if (sll.isPalindrome()) {
+                                cout << "The list is a palindrome." << endl;
+                            } else {
+                                cout << "The list is not a palindrome." << endl;
+                            }
+                            break;
+                        case 8:
+                            cout << "Number of nodes: " << sll.countNodes() << endl;
+                            break;
+                        case 9:
+                            cout << "Max value: " << sll.max() << endl;
+                            break;
+                        case 10:
+                            cout << "Average value: " << sll.average() << endl;
+                            break;
+                        case 11:
+                            sll.reverse();
+                            cout << "List reversed." << endl;
+                            break;
+                        case 12:
+                            sll.printList();
+                            break;
+                        case 13:
+                            // Back to Single Linked List Menu
+                            break;
+                        default:
+                            cout << "Invalid option. Please try again." << endl;
+                    }
+                } while (option != 13);
+                break;
+            case 2:
+                do {
+                    cout << "---------------Circular Linked List Menu-------------------" << endl;
+                    cout << "1  Add First" << endl;
+                    cout << "2. Add Last" << endl;
+                                        cout << "3. Delete First" << endl;
+                    cout << "4. Delete Last" << endl;
+                    cout << "5. Insert at Index" << endl;
+                    cout << "6. Search" << endl;
+                    cout << "7. Check Palindrome" << endl;
+                    cout << "8. Count Nodes" << endl;
+                    cout << "9. Find Max" << endl;
+                    cout << "10. Calculate Average" << endl;
+                    cout << "11. Print List" << endl;
+                    cout << "12. Back to Main Menu" << endl;
+                    cin >> option;
+
+                    switch (option) {
+                        case 1:
+                            cout << "Enter value to add: ";
+                            cin >> value;
+                            cll.addFirst(value);
+                            cout << "Added " << value << " to the circular linked list." << endl;
+                            break;
+                        case 2:
+                            cout << "Enter value to add: ";
+                            cin >> value;
+                            cll.addLast(value);
+                            cout << "Added " << value << " to the circular linked list." << endl;
+                            break;
+                        case 3:
+                            cll.deleteFirst();
+                            cout << "Deleted first element from the circular linked list." << endl;
+                            break;
+                        case 4:
+                            cll.deleteLast();
+                            cout << "Deleted last element from the circular linked list." << endl;
+                            break;
+                        case 5:
+                            cout << "Enter value to insert: ";
+                            cin >> value;
+                            cout << "Enter index to insert at: ";
+                            cin >> index;
+                            cll.insertAt(value, index);
+                            break;
+                        case 6:
+                            cout << "Enter value to search: ";
+                            cin >> value;
+                            if (cll.search(value)) {
+                                cout << value << " is present in the circular linked list." << endl;
+                            } else {
+                                cout << value << " is not present in the circular linked list." << endl;
+                            }
+                            break;
+                        case 7:
+                            if (cll.isPalindrome()) {
+                                cout << "The circular linked list is a palindrome." << endl;
+                            } else {
+                                cout << "The circular linked list is not a palindrome." << endl;
+                            }
+                            break;
+                        case 8:
+                            cout << "Number of nodes in the circular linked list: " << cll.countNodes() << endl;
+                            break;
+                        case 9:
+                            // Implement max() for circular linked list and display the result
+                            cout << "Maximum value in the circular linked list: " << cll.max() << endl;
+                            break;
+                        case 10:
+                            // Implement average() for circular linked list and display the result
+                            cout << "Average value in the circular linked list: " << cll.average() << endl;
+                            break;
+                        case 11:
+                            cll.printList();
+                            break;
+                        case 12:
+                            // Go back to the main menu
+                            break;
+                        default:
+                            cout << "Invalid option. Please try again." << endl;
+                            break;
+                    }
+                } while (option != 12);
+                break;
+            case 3:
+                do {
+                    cout << "---------------Double Linked List Menu-------------------" << endl;
+                    cout << "1  Add First" << endl;
+                    cout << "2. Add Last" << endl;
+                    cout << "3. Delete First" << endl;
+                    cout << "4. Delete Last" << endl;
+                    cout << "5. Insert at Index" << endl;
+                    cout << "6. Search" << endl;
+                    cout << "7. Check Palindrome" << endl;
+                    cout << "8. Count Nodes" << endl;
+                    cout << "9. Find Max" << endl;
+                    cout << "10. Calculate Average" << endl;
+                    cout << "11. Print List" << endl;
+                    cout << "12. Back to Main Menu" << endl;
+                    cin >> option;
+
+                    switch (option) {
+                        case 1:
+                            cout << "Enter value to add: ";
+                            cin >> value;
+                            dll.addFirst(value);
+                            cout << "Added " << value << " to the double linked list." << endl;
+                            break;
+                        case 2:
+                            cout << "Enter value to add: ";
+                            cin >> value;
+                            dll.addLast(value);
+                            cout << "Added " << value << " to the double linked list." << endl;
+                            break;
+                        case 3:
+                            dll.deleteFirst();
+                            cout << "Deleted first element from the double linked list." << endl;
+                            break;
+                        case 4:
+                            dll.deleteLast();
+                            cout << "Deleted last element from the double linked list." << endl;
+                            break;
+                        case 5:
+                            cout << "Enter value to insert: ";
+                            cin >> value;
+                            cout << "Enter index to insert at: ";
+                            cin >> index;
+                            dll.insertAt(value, index);
+                            break;
+                        case 6:
+                            cout << "Enter value to search: ";
+                            cin >> value;
+                            if (dll.search(value)) {
+                                cout << value << " is present in the double linked list." << endl;
+                            } else {
+                                cout << value << " is not present in the double linked list." << endl;
+                            }
+                            break;
+                        case 7:
+                            if (dll.isPalindrome()) {
+                                cout << "The double linked list is a palindrome." << endl;
+                            } else {
+                                cout << "The double linked list is not a palindrome." << endl;
+                            }
+                            break;
+                        case 8:
+                            cout << "Number of nodes in the double linked list: " << dll.countNodes() << endl;
+                            break;
+                        case 9:
+                            // Implement max() for circular linked list and display the result
+                            cout << "Maximum value in the double linked list: " << dll.max() << endl;
+                            break;
+                        case 10:
+                            // Implement average() for circular linked list and display the result
+                            cout << "Average value in the double linked list: " << dll.average() << endl;
+                            break;
+                        case 11:
+                            dll.printList();
+                            break;
+                        case 12:
+                            // Go back to the main menu
+                            break;
+                        default:
+                            cout << "Invalid option. Please try again." << endl;
+                            break;
+                    }
+                } while (option != 12);
+                break;
+            case 4:
+                do {
+                    cout << "---------------Double Circular Linked List Menu-------------------" << endl;
+                    cout << "1  Add First" << endl;
+                    cout << "2. Add Last" << endl;
+                    cout << "3. Delete First" << endl;
+                    cout << "4. Delete Last" << endl;
+                    cout << "5. Insert at Index" << endl;
+                    cout << "6. Search" << endl;
+                    cout << "7. Check Palindrome" << endl;
+                    cout << "8. Count Nodes" << endl;
+                    cout << "9. Find Max" << endl;
+                    cout << "10. Calculate Average" << endl;
+                    cout << "11. Print List" << endl;
+                    cout << "12. Back to Main Menu" << endl;
+                    cin >> option;
+
+                    switch (option) {
+                        case 1:
+                            cout << "Enter value to add: ";
+                            cin >> value;
+                            dcll.addFirst(value);
+                            cout << "Added " << value << " to the double Circular linked list." << endl;
+                            break;
+                        case 2:
+                            cout << "Enter value to add: ";
+                            cin >> value;
+                            dcll.addLast(value);
+                            cout << "Added " << value << " to the double Circular linked list." << endl;
+                            break;
+                        case 3:
+                            dcll.deleteFirst();
+                            cout << "Deleted first element from the double Circular linked list." << endl;
+                            break;
+                        case 4:
+                            dcll.deleteLast();
+                            cout << "Deleted last element from the double Circular linked list." << endl;
+                            break;
+                        case 5:
+                            cout << "Enter value to insert: ";
+                            cin >> value;
+                            cout << "Enter index to insert at: ";
+                            cin >> index;
+                            dcll.insertAt(value, index);
+                            break;
+                        case 6:
+                            cout << "Enter value to search: ";
+                            cin >> value;
+                            if (dll.search(value)) {
+                                cout << value << " is present in the double Circular linked list." << endl;
+                            } else {
+                                cout << value << " is not present in the double Circular linked list." << endl;
+                            }
+                            break;
+                        case 7:
+                            if (dcll.isPalindrome()) {
+                                cout << "The double Circular linked list is a palindrome." << endl;
+                            } else {
+                                cout << "The double Circular linked list is not a palindrome." << endl;
+                            }
+                            break;
+                        case 8:
+                            cout << "Number of nodes in the double linked list: " << dcll.countNodes() << endl;
+                            break;
+                        case 9:
+                            // Implement max() for circular linked list and display the result
+                            cout << "Maximum value in the double linked list: " << dcll.max() << endl;
+                            break;
+                        case 10:
+                            // Implement average() for circular linked list and display the result
+                            cout << "Average value in the double linked list: " << dcll.average() << endl;
+                            break;
+                        case 11:
+                            dcll.printList();
+                            break;
+                        case 12:
+                            // Go back to the main menu
+                            break;
+                        default:
+                            cout << "Invalid option. Please try again." << endl;
+                            break;
+                    }
+                } while (option != 12);
+                break;
+            case 5:
+                cout << "Exiting the program. Goodbye!" << endl;
+                break;
+            default:
+                cout << "Invalid option. Please try again." << endl;
+                break;
+        }
+    } while (option != 5);
+
+    return 0;
+}
+
